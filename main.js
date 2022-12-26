@@ -13,7 +13,9 @@ class Server {
             const request = new Request(req);
             request.define();
             const response = res;
-            this.graph[path](request, response);
+            if(this.match(path, request._url)) {
+                this.graph[path](request, response);
+            }
         });
     }
 
@@ -23,6 +25,10 @@ class Server {
 
     listen(port) {
         this.server.listen(port);
+    }
+
+    match(path, desiredPath) {
+        return path == desiredPath;
     }
 }
 

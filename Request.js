@@ -4,7 +4,7 @@ class Request {
         this._req = req;
         this.headers = req.headers;
         this._url = req.url;
-        this.queryParams = this.parse(this._url);
+        this.queryParams = this._url.includes("?") ? this.parse(this._url) : {};
         this.body = "";
         
         // Request data stream
