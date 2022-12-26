@@ -1,12 +1,10 @@
-const http = require("http");
-const Request = require("./Request");
+const Server = require("./main");
 
-const server = http.createServer((req, res) => {
-    console.log(req.url);
-    const request = new Request(req);
-    res.writeHead(200, {'Content-Type': 'text/html'});
-    res.write('Hello World!');
-    res.end();
+const app = new Server();
+
+app.append("/", (req, res) => {
+    console.log(req);
+    console.log(res);
 });
 
-server.listen(8000)
+app.listen(8000)
