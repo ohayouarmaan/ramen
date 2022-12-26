@@ -4,3 +4,10 @@ Just another ✨Backend API Framework✨ for javascript
 ## The plan
 Currently it's just me trying to create a javascript framework for making APIs. This is definitely inspired if not copied from the Express framework
 
+the `Server` class in `main.js` file can be initialized which will create an HTTP server and you can use the listen function to listen to a specific port
+
+the `Request` class in the `Request.js` file holds the request object which can be used to access all the properties for the http request.
+
+### TODO:
+* Create a response class
+* Create a middleware system
