@@ -11,6 +11,7 @@ class Server {
     handle(req, res) {
         Object.keys(this.graph).forEach(path => {
             const request = new Request(req);
+            request.define();
             const response = res;
             this.graph[path](request, response);
         });

@@ -4,6 +4,7 @@ class Request {
         this._req = req;
         this.headers = req.headers;
         this._url = req.url;
+        this.queryParams = this.parse(this._url);
         this.body = "";
         
         // Request data stream
@@ -27,6 +28,21 @@ class Request {
             Url: ${this._url};
         `)
         console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
+    }
+
+    parse(url) {
+        let params = url.split("?");
+        console.log(params)
+        params = params.slice(1, params.length)
+        params = params[0].split("&");
+        console.log(params);
+        const qps = {};
+        params.forEach(p => {
+            const q = p.split("=")[0];
+            const _p = p.split("=")[1];
+            qps[q] = _p;
+        });
+        return qps;
     }
 
 }

@@ -1,5 +1,4 @@
 const Request = require("./Request");
-const Graph = {};
 
 const generateReqAndRes = (req, res) => {
     const request = new Request(req);
@@ -8,13 +7,7 @@ const generateReqAndRes = (req, res) => {
 }
 
 const append = (path, cb) => {
-    Graph[path] = cb;
-}
-
-const processGraph = () => {
-    Object.keys(Graph).forEach(path => {
-        Graph[path]
-    })
+    
 }
 
 const Layer = (path) => {
