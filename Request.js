@@ -20,6 +20,15 @@ class Request {
         });
     };
 
+    define() {
+        console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
+        console.log(`
+            Method: ${this.method};
+            Url: ${this._url};
+        `)
+        console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
+    }
+
 }
 
 module.exports = Request;
