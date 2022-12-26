@@ -1,15 +1,14 @@
 class Request {
     constructor(req) {
+        this.method = (req.method);
         this._req = req;
+        this.headers = req.headers;
         this._url = req.url;
         this.body = "";
-
         this._req.on("data", e => {
             this.body += e;
-        })
-
+        });
         this._req.on("end", e => {
-            console.log(this.body);
             if(this.body == "") {
                 this.body = {}
             } else {
