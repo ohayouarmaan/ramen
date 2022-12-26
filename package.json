@@ -1,0 +1,23 @@
+{
+  "name": "ramen",
+  "version": "1.0.0",
+  "description": "Just another ✨Backend API Framework✨ for javascript\r ## The plan\r Currently it's just me trying to create a javascript framework for making APIs. This is definitely inspired if not copied from the Express framework",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "run:dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ohayouarmaan/ramen.git"
+  },
+  "author": "Armaan Gupta",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ohayouarmaan/ramen/issues"
+  },
+  "homepage": "https://github.com/ohayouarmaan/ramen#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
