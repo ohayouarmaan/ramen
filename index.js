@@ -26,4 +26,9 @@ app.append("/bar/:x", (req, res) => {
     res.end();
 });
 
+app.append("/bar/:x/:y", (req, res) => {
+    res.writeHead(200, { 'Content-Type': 'text/html' });
+    res.write('Working barx foox!');
+    res.end();
+});
 app.listen(8000)
