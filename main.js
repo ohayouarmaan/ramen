@@ -3,18 +3,18 @@ const Request = require("./Request");
 
 class Server {
     constructor() {
-        this.server = http.createServer((req, res) => this.handle(req, res));
+        this.server = http.createServer(async (req, res) => await this.handle(req, res));
         this.graph = {};
 
     }
 
-    handle(req, res) {
-        Object.keys(this.graph).forEach(path => {
+    async handle(req, res) {
+        Object.keys(this.graph).forEach(async (path) => {
             const request = new Request(req);
-            request.define();
+            // request.define();
             const response = res;
-            if(this.match(path, request._url)) {
-                this.graph[path](request, response);
+            if(await this.match(path, request._url)) {
+                return this.graph[path](request, response); 
             }
         });
     }
@@ -27,8 +27,36 @@ class Server {
         this.server.listen(port);
     }
 
-    match(path, desiredPath) {
-        return path == desiredPath;
+    async match(path, desiredPath) {
+        const tokens = [];
+        const routes = path.split("/");
+        const desiredRoutes = desiredPath.split("/");
+
+        if(routes.length !== desiredRoutes.length) {
+            return false;
+        }
+
+        routes.forEach(r => {
+            if(r.startsWith(":")) {
+                const q = r.slice(1, r.length)
+                tokens.push({q})
+            } else {
+                tokens.push(r)
+            }
+        });
+        for(let i = 0; i < tokens.length; i++) {
+            if(typeof tokens[i] == "object" && desiredRoutes[i]) {
+                const q = Object.keys(tokens[i])[0]
+                tokens[i] = {q: desiredRoutes[i]}
+            } else if(typeof tokens[i] == "string" && desiredRoutes[i]) {
+                if(tokens[i] !== desiredRoutes[i]){
+                    return false
+                }
+                tokens[i] = desiredRoutes[i]
+            }
+        }
+
+        return true;
     }
 }
 

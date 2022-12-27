@@ -14,4 +14,16 @@ app.append("/foo", (req, res) => {
     res.end();
 });
 
+app.append("/foo/:x", (req, res) => {
+    res.writeHead(200, { 'Content-Type': 'text/html' });
+    res.write('Working foox!');
+    res.end();
+});
+
+app.append("/bar/:x", (req, res) => {
+    res.writeHead(200, { 'Content-Type': 'text/html' });
+    res.write('Working barx!');
+    res.end();
+});
+
 app.listen(8000)
