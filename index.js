@@ -11,7 +11,7 @@ app.append("/", (req, res) => {
 app.append("/foo", (req, res) => {
     res.writeHead(200, { 'Content-Type': 'text/html' });
     res.write('Working foo!');
-    res.end();
+    return res.end();
 });
 
 app.append("/foo/:x", (req, res) => {

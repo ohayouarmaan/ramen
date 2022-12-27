@@ -10,15 +10,22 @@ class Server {
     async handle(req, res) {
         const request = new Request(req);
         const response = res;
-        Object.keys(this.graph).forEach(async (path) => {
-            // request.define();
+        let sent = false;
+        await Object.keys(this.graph).forEach(async (path) => {
+            request.define();
             const params = await this.match(path, request._url)
             if(params) {
+                console.log("hello, ", path);
                 request.addParams(params);
+                sent = true;
                 return this.graph[path](request, response); 
             }
         });
-        return this.defaultMiddleWare(request, response);
+        if(!sent) {
+            console.log(request._url);
+            console.log("hello")
+            return this.defaultMiddleWare(request, response);
+        }
     }
 
     defaultAppend(cb) {
