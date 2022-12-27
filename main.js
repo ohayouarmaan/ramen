@@ -9,14 +9,19 @@ class Server {
     }
 
     async handle(req, res) {
+        const request = new Request(req);
+        const response = res;
         Object.keys(this.graph).forEach(async (path) => {
-            const request = new Request(req);
             // request.define();
-            const response = res;
             if(await this.match(path, request._url)) {
                 return this.graph[path](request, response); 
             }
         });
+        return this.defaultMiddleWare(request, response);
+    }
+
+    defaultAppend(cb) {
+        this.defaultMiddleWare = cb;
     }
 
     append(path, cb) {
