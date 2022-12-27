@@ -45,6 +45,10 @@ class Request {
         return qps;
     }
 
+    addParams(params) {
+        this.params = params
+    }
+
 }
 
 module.exports = Request;
