@@ -11,7 +11,7 @@ the `Request` class in the `Request.js` file holds the request object which can 
 ### TODO:
 * Create a response class
 * [ x ] Create a middleware system
-* Add query parameters
+* [ x ] Add query parameters
 
 #### Devlogs
 [1]: [I am creating a new ✨JavaScript✨ Framework](https://dev.to/ohayouarmaan/i-am-creating-a-new-javascript-framework-46af)
