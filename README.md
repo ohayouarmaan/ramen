@@ -17,9 +17,9 @@ the `Request` class in the `Request.js` file holds the request object which can 
 * [ x ] Create a response class
 * [ x ] Create a middleware system
 * [ x ] Add query parameters
+* [ x ] add respond features in the response class
 
 ### TODO:
-* [ x ] add respond features in the response class
 * [  ] plan future features
 * [  ] think about database connectivities
 
