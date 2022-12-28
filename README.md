@@ -19,9 +19,10 @@ the `Request` class in the `Request.js` file holds the request object which can 
 * [ x ] Add query parameters
 
 ### TODO:
-* [  ] add respond features in the response class
+* [ x ] add respond features in the response class
 * [  ] plan future features
 * [  ] think about database connectivities
 
 #### Devlogs
 [1]: [I am creating a new ✨JavaScript✨ Framework](https://dev.to/ohayouarmaan/i-am-creating-a-new-javascript-framework-46af)
+[2]: [Update on ✨Ramen 🍜✨ A new JavaScript Framework!](https://dev.to/ohayouarmaan/update-on-ramen-a-new-javascript-framework-239g)
