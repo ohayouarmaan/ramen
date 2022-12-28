@@ -1,5 +1,6 @@
 const http = require("http");
 const Request = require("./Request");
+const Response = require("./Response");
 
 class Server {
     constructor() {
@@ -9,13 +10,13 @@ class Server {
 
     async handle(req, res) {
         const request = new Request(req);
-        const response = res;
+        const response = new Response(res);
         let sent = false;
         await Object.keys(this.graph).forEach(async (path) => {
             request.define();
             const params = await this.match(path, request._url)
-            if(params) {
-                console.log("hello, ", path);
+            if(params && sent == false) {
+                console.log("hello, ", params);
                 request.addParams(params);
                 sent = true;
                 return this.graph[path](request, response); 
