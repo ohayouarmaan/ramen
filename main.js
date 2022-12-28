@@ -16,15 +16,12 @@ class Server {
             request.define();
             const params = await this.match(path, request._url)
             if(params && sent == false) {
-                console.log("hello, ", params);
                 request.addParams(params);
                 sent = true;
                 return this.graph[path](request, response); 
             }
         });
         if(!sent) {
-            console.log(request._url);
-            console.log("hello")
             return this.defaultMiddleWare(request, response);
         }
     }
