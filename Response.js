@@ -4,6 +4,15 @@ class Response {
         this.status = status || 200;
     }
 
+    cookies(_cookies) {
+        const cookieWithValues = []
+        Object.keys(_cookies).forEach(cookie => {
+            cookieWithValues.push(`${cookie}=${_cookies[cookie]}`)
+        });
+        console.log('cookieWithValues', cookieWithValues);
+        this._res.setHeader('Set-Cookie', cookieWithValues);
+    }
+    
     send(data, status) {
         if(status) {
             this.status = status;

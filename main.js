@@ -51,7 +51,7 @@ class Server {
         routes.forEach(r => {
             if(r.startsWith(":")) {
                 const q = r.slice(1, r.length)
-                tokens.push({q})
+                tokens.push({q: q})
                 params[q] = q;
             } else {
                 tokens.push(r)
@@ -61,8 +61,7 @@ class Server {
         for(let i = 0; i < tokens.length; i++) {
             if(typeof tokens[i] == "object" && desiredRoutes[i]) {
                 const q = Object.keys(tokens[i])[0]
-                tokens[i] = {q: desiredRoutes[i]}
-                params[q] = desiredRoutes[i];
+                params[tokens[i][q]] = desiredRoutes[i];
             } else if(typeof tokens[i] == "string" && desiredRoutes[i]) {
                 if(tokens[i] !== desiredRoutes[i]){
                     return false
