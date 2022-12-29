@@ -1,3 +1,5 @@
+import { MIME_TYPES } from "./Constants";
+
 class Response {
     constructor(res, status) {
         this._res = res;
@@ -31,10 +33,10 @@ class Response {
             return this._res.end()
         } else if(typeof data == "string") {
             this.data = data;
-            this.type = "text/html"
+            this.type = MIME_TYPES.html
         } else if (typeof data == "object") {
             this.data = JSON.stringify(data);
-            this.type = "text/json"
+            this.type = MIME_TYPES.json
         };
 
         this._res.writeHead(this.status, { "Content-Type": this.type });
