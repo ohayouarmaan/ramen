@@ -6,6 +6,8 @@ class Request {
         this._url = req.url;
         this.queryParams = this._url.includes("?") ? this.parse(this._url) : {};
         this.body = "";
+        // this.cookies = this._req.headers.cookies;
+        // console.log(this.cookies);
         
         // Request data stream
         // the data stream gives you the body object

@@ -7,7 +7,14 @@ class Response {
     cookies(_cookies) {
         const cookieWithValues = []
         Object.keys(_cookies).forEach(cookie => {
-            cookieWithValues.push(`${cookie}=${_cookies[cookie]}`)
+            const path = _cookies[cookie]['path'] || '/';
+            let options = ""
+            Object.keys(_cookies[cookie]).forEach(opt => {
+                if(opt != "val") {
+                    options += `${opt}=${_cookies[cookie][opt]};`;
+                };
+            })
+            cookieWithValues.push(`${cookie}=${_cookies[cookie]['val']};${options}`)
         });
         console.log('cookieWithValues', cookieWithValues);
         this._res.setHeader('Set-Cookie', cookieWithValues);

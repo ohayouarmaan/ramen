@@ -20,7 +20,7 @@ app.append("/bar/:x", (req, res) => {
 
 app.append("/bar/:x/:y", (req, res) => {
     console.log(req.params);
-    res.cookies({ "x": req.params.x, "y": req.params.y });
+    res.cookies({ "x": {val: req.params.x, path: '/'}, "y": {val: req.params.y, path: '/'} });
     return res.send({ "foo": "bar 5th" });
 });
 
