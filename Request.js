@@ -1,5 +1,7 @@
 class Request {
     constructor(req) {
+
+        // Set properties
         this.method = (req.method);
         this._req = req;
         this.headers = req.headers;
@@ -35,12 +37,12 @@ class Request {
     };
 
     define() {
-        console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
+        console.log('________________________________________________________');
         console.log(`
             Method: ${this.method};
             Url: ${this._url};
         `)
-        console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
+        console.log('________________________________________________________');
     }
 
     parse(url) {
@@ -62,7 +64,6 @@ class Request {
     addParams(params) {
         this.params = params
     }
-
 }
 
 module.exports = Request;
