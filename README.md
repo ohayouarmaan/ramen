@@ -21,7 +21,7 @@ the `Request` class in the `Request.js` file holds the request object which can 
 
 ### TODO:
 * [  ] plan future features
-    1. Work on ORMs : [Research](https://www.notion.so/Research-on-ORM-Implementation-77077a80df7640feb5dd149675eaae04)
+    1. Work on ORMs : [Research](https://celestial-can-1ae.notion.site/Research-on-ORM-Implementation-77077a80df7640feb5dd149675eaae04)
     2. Change codebase to TypeScript
     3. Add Routers
 
