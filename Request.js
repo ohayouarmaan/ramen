@@ -4,13 +4,13 @@ class Request {
         this._req = req;
         this.headers = req.headers;
         this._url = req.url;
-        this.queryParams = this._url.includes("?") ? this.parse(this._url) : {};
-        this.body = "";
-        // this.cookies = this._req.headers.cookies;
-        // console.log(this.cookies);
         
+        // Parse Query Parameters
+        this.queryParams = this._url.includes("?") ? this.parse(this._url) : {};
+
         // Request data stream
         // the data stream gives you the body object
+        this.body = "";
         this._req.on("data", e => {
             this.body += e;
         });
@@ -21,6 +21,17 @@ class Request {
                 this.body = JSON.parse(this.body);
             };
         });
+
+        // Parse Cookies
+        this.cookies = {};
+        if(Object.keys(this._req.headers).includes("cookie")){
+            const _cookies = this._req.headers.cookie.split("; ");
+            _cookies.forEach(cookie => {
+                const cookieName = cookie.split("=")[0];
+                const value = cookie.split("=")[cookie.split("=").length - 1];
+                this.cookies[cookieName] = value;
+            });
+        } 
     };
 
     define() {
@@ -47,6 +58,7 @@ class Request {
         return qps;
     }
 
+    // A function which will add route parameters.
     addParams(params) {
         this.params = params
     }
