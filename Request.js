@@ -2,6 +2,7 @@ class Request {
     constructor(req) {
 
         // Set properties
+        console.log(req.socket.remoteAddress);
         this.method = (req.method);
         this._req = req;
         this.headers = req.headers;
@@ -33,7 +34,7 @@ class Request {
                 const value = cookie.split("=")[cookie.split("=").length - 1];
                 this.cookies[cookieName] = value;
             });
-        } 
+        }
     };
 
     define() {

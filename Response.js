@@ -1,4 +1,4 @@
-import { MIME_TYPES } from "./Constants";
+const { MIME_TYPES } = require("./Constants");
 
 class Response {
     constructor(res, status) {
