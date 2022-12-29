@@ -13,6 +13,6 @@ const MIME_TYPES = {
     svg: 'image/svg+xml',
 }
 
-export {
+module.exports = {
     MIME_TYPES
 }
