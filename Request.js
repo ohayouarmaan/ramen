@@ -2,11 +2,11 @@ class Request {
     constructor(req) {
 
         // Set properties
-        console.log(req.socket.remoteAddress);
         this.method = (req.method);
         this._req = req;
         this.headers = req.headers;
         this._url = req.url;
+        this.ip = (req.headers['x-forwarded-for'] || '').split(',').pop().trim() || req.socket.remoteAddress;
         
         // Parse Query Parameters
         this.queryParams = this._url.includes("?") ? this.parse(this._url) : {};
