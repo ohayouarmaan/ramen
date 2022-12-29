@@ -6,7 +6,13 @@ class Request {
         this._req = req;
         this.headers = req.headers;
         this._url = req.url;
-        this.ip = (req.headers['x-forwarded-for'] || '').split(',').pop().trim() || req.socket.remoteAddress;
+        this.connection = req.connection || {};
+        this.socket = req.socket || {};
+        this.ip = 
+            this.headers['x-forwared-for'] || 
+            this.connection.remoteAddress || 
+            this.socket.remoteAddress || 
+            this.connection.socket?.remoteAddress;
         
         // Parse Query Parameters
         this.queryParams = this._url.includes("?") ? this.parse(this._url) : {};
