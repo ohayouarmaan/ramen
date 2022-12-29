@@ -21,7 +21,12 @@ the `Request` class in the `Request.js` file holds the request object which can 
 
 ### TODO:
 * [  ] plan future features
+    1. Work on ORMs : [Research](https://www.notion.so/Research-on-ORM-Implementation-77077a80df7640feb5dd149675eaae04)
 * [  ] think about database connectivities
+
+### Socials:
+* Notion: [Notion Teamspace](https://celestial-can-1ae.notion.site/Ramen-An-open-source-Backend-Rest-API-Framework-15b227a413e54909b7d64e03d655c084)
+* Twitter: [@RamenJs](https://twitter.com/RamenJs)
 
 #### Devlogs
 [1]: [I am creating a new ✨JavaScript✨ Framework](https://dev.to/ohayouarmaan/i-am-creating-a-new-javascript-framework-46af)
