@@ -18,12 +18,13 @@ the `Request` class in the `Request.js` file holds the request object which can 
 * [ x ] Create a middleware system
 * [ x ] Add query parameters
 * [ x ] add respond features in the response class
+* [ x ] Add Routers
 
 ### TODO:
 * [  ] plan future features
     1. Work on ORMs : [Research](https://celestial-can-1ae.notion.site/Research-on-ORM-Implementation-77077a80df7640feb5dd149675eaae04)
+        -- Canceled reason: Security issues.
     2. Change codebase to TypeScript
-    3. Add Routers
 
 ### Socials:
 * Notion: [Notion Teamspace](https://celestial-can-1ae.notion.site/Ramen-An-open-source-Backend-Rest-API-Framework-15b227a413e54909b7d64e03d655c084)
