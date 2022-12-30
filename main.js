@@ -3,8 +3,10 @@ const Request = require("./Request");
 const Response = require("./Response");
 
 class Server {
-    constructor() {
-        this.server = http.createServer(async (req, res) => await this.handle(req, res));
+    constructor(isRouter) {
+        if(!isRouter) {
+            this.server = http.createServer(async (req, res) => await this.handle(req, res));
+        }
         this.graph = {};
     }
 
@@ -32,6 +34,10 @@ class Server {
 
     append(path, cb) {
         this.graph[path] = cb;
+    }
+
+    appendRouter(router) {
+
     }
 
     listen(port) {
