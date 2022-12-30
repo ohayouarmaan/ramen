@@ -2,6 +2,9 @@ const Server = require("./main");
 const Router = require("./router");
 
 const app = new Server();
+/*
+
+--- Making different routes directly on the server class
 
 app.append("/", (req, res) => {
     return res.send({ "foo": "bar 1st" });
@@ -28,5 +31,24 @@ app.append("/bar/:x/:y", (req, res) => {
 app.defaultAppend((req, res) => {
     return res.send({ "error": "Not Found" }, 404);
 });
+
+*/
+
+
+// Using the router class
+
+const router = new Router("/user");
+
+router.append("/:name", (req, res) => {
+    console.log("working");
+    res.send(`hello ${req.params.name}`, 200);
+});
+
+app.appendRouter(router);
+app.defaultAppend((req, res) => {
+    res.send({
+        message: 'not found.'
+    }, 200)
+})
 
 app.listen(8000)

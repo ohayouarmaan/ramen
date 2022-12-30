@@ -37,7 +37,10 @@ class Server {
     }
 
     appendRouter(router) {
-
+        console.log(router.graph);
+        Object.keys(router.graph).forEach(route => {
+            this.append(route, router.graph[route]);
+        });
     }
 
     listen(port) {

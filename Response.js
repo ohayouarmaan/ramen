@@ -32,6 +32,7 @@ class Response {
             this._res.writeHead(this.status);
             return this._res.end()
         } else if(typeof data == "string") {
+            console.log(data);
             this.data = data;
             this.type = MIME_TYPES.html
         } else if (typeof data == "object") {
