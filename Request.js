@@ -23,6 +23,7 @@ class Request {
         this._req.on("data", e => {
             this.body += e;
         });
+
         this._req.on("end", e => {
             if(this.body == "" || this.body == "\n") {
                 this.body = {}

@@ -1,4 +1,4 @@
-# Ramen - An opensource Backend Framework
+# Ramen - Ramen - A micro framework for creating REST API in Nodejs
 ![Ramen image i got from google lol](https://res.cloudinary.com/practicaldev/image/fetch/s--QGRMnu9Q--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_auto%2Cw_880/https://dev-to-uploads.s3.amazonaws.com/uploads/articles/nfg8h1baize3kntwatl5.png)
 
 Just another ✨Backend API Framework✨ for javascript
