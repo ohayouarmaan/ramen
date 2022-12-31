@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "run:dev": "nodemon index.js"
+    "run:dev": "nodemon index.js",
+    "run:test:auth": "nodemon examples/authentication/index.js"
   },
   "repository": {
     "type": "git",

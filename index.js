@@ -1,58 +1,86 @@
-const Server = require("./main");
-const Router = require("./router");
-const path = require("path");
+const http = require("http");
+const Request = require("./Request");
+const Response = require("./Response");
 
-const app = new Server();
+class Server {
+    constructor(isRouter) {
+        if(!isRouter) {
+            this.server = http.createServer(async (req, res) => await this.handle(req, res));
+        }
+        this.graph = {};
+    }
 
-/*
+    async handle(req, res) {
+        const request = new Request(req);
+        const response = new Response(res);
+        let sent = false;
+        await Object.keys(this.graph).forEach(async (path) => {
+            request.define();
+            const params = await this.match(path, request._url)
+            if(params && sent == false) {
+                request.addParams(params);
+                sent = true;
+                return this.graph[path](request, response); 
+            }
+        });
+        if(!sent) {
+            return this.defaultMiddleWare(request, response);
+        }
+    }
 
---- Making different routes directly on the server class
+    defaultAppend(cb) {
+        this.defaultMiddleWare = cb;
+    }
 
-app.append("/", (req, res) => {
-    return res.send({ "foo": "bar 1st" });
-});
+    append(path, cb) {
+        this.graph[path] = cb;
+    }
 
-app.append("/foo", (req, res) => {
-    return res.send({ "foo": "bar 2nd" });
-});
+    appendRouter(router) {
+        console.log(router.graph);
+        Object.keys(router.graph).forEach(route => {
+            this.append(route, router.graph[route]);
+        });
+    }
 
-app.append("/foo/:x", (req, res) => {
-    return res.send({ "foo": "bar 3rd" });
-});
+    listen(port) {
+        this.server.listen(port);
+    }
 
-app.append("/bar/:x", (req, res) => {
-    return res.send({ "foo": "bar 4th" });
-});
+    async match(path, desiredPath) {
+        const tokens = [];
+        const params = {};
+        const routes = path.split("/");
+        const desiredRoutes = desiredPath.split("/");
 
-app.append("/bar/:x/:y", (req, res) => {
-    console.log(req.params);
-    res.cookies({ "x": {val: req.params.x, path: '/'}, "y": {val: req.params.y, path: '/'} });
-    return res.send({ "foo": "bar 5th" });
-});
+        if(routes.length !== desiredRoutes.length) {
+            return false;
+        }
 
-app.defaultAppend((req, res) => {
-    return res.send({ "error": "Not Found" }, 404);
-});
+        routes.forEach(r => {
+            if(r.startsWith(":")) {
+                const q = r.slice(1, r.length)
+                tokens.push({q: q})
+                params[q] = q;
+            } else {
+                tokens.push(r)
+            }
+        });
 
-*/
+        for(let i = 0; i < tokens.length; i++) {
+            if(typeof tokens[i] == "object" && desiredRoutes[i]) {
+                const q = Object.keys(tokens[i])[0]
+                params[tokens[i][q]] = desiredRoutes[i];
+            } else if(typeof tokens[i] == "string" && desiredRoutes[i]) {
+                if(tokens[i] !== desiredRoutes[i]){
+                    return false
+                }
+                tokens[i] = desiredRoutes[i]
+            }
+        }
 
-// Using the router class
+        return params;
+    }
+}
 
-const router = new Router("/user");
-
-router.append("/:name", async (req, res) => {
-    const user = {
-        name: req.params.name
-    };
-
-    return await res.render(path.resolve(__dirname, "example.ejs"), { user });
-});
-
-app.appendRouter(router);
-app.defaultAppend((req, res) => {
-    res.send({
-        message: 'not found.'
-    }, 200)
-})
-
-app.listen(8000)
+module.exports = Server;

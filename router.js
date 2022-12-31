@@ -1,4 +1,4 @@
-const Server = require("./main");
+const Server = require("./index");
 
 class Router extends Server {
     constructor(basePath) {
