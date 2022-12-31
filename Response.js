@@ -1,4 +1,5 @@
 const { MIME_TYPES } = require("./Constants");
+const EJS = require("ejs");
 
 class Response {
     constructor(res, status) {
@@ -43,6 +44,17 @@ class Response {
         this._res.write(this.data);
         this._res.end();
     }
+
+    async render(path, options, status=200) {
+        try {
+            const html = await EJS.renderFile(path, options);
+            this.send(html, status)
+        } catch(e) {
+            const html = String(e);
+            this.send(html, 400);
+        };
+    };
+
 }
 
 module.exports = Response;

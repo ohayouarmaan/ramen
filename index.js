@@ -1,7 +1,9 @@
 const Server = require("./main");
 const Router = require("./router");
+const path = require("path");
 
 const app = new Server();
+
 /*
 
 --- Making different routes directly on the server class
@@ -34,14 +36,16 @@ app.defaultAppend((req, res) => {
 
 */
 
-
 // Using the router class
 
 const router = new Router("/user");
 
-router.append("/:name", (req, res) => {
-    console.log("working");
-    res.send(`hello ${req.params.name}`, 200);
+router.append("/:name", async (req, res) => {
+    const user = {
+        name: req.params.name
+    };
+
+    return await res.render(path.resolve(__dirname, "example.ejs"), { user });
 });
 
 app.appendRouter(router);
