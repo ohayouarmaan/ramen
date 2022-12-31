@@ -39,33 +39,6 @@ class Request {
         }
     };
 
-    // something = new Promise((resolve, reject) => {
-    //     // Request data stream
-    //     // the data stream gives you the body object
-    //     this.body = "";
-    //     this._req.on("data", e => {
-    //         this.body += e;
-    //     });
-
-    //     this._req.on("end", async (e) => {
-    //         if(this.body == "" || this.body == "\n") {
-    //             this.body = {}
-    //         } else {
-    //             if (this.headers['content-type']) {
-    //                 if(this.headers['content-type'] == 'application/x-www-form-urlencoded') {
-    //                     const data = querystring.decode(this.body);
-    //                     this.body = data;
-    //                     return true;
-    //                 } else if(this.headers['content-type'] == 'application/json') {
-    //                     this.body = JSON.parse(this.body);
-    //                     return true;
-    //                 }
-    //             }
-    //         };
-    //     });
-    //     resolve(1);
-    // })
-
     async init() {
         return new Promise(fullfill => this._req.on("end", () => {
             if(this.body == "" || this.body == "\n") {
