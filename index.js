@@ -1,4 +1,5 @@
 const http = require("http");
+const Events = require("events");
 const Request = require("./Request");
 const Response = require("./Response");
 
@@ -12,19 +13,21 @@ class Server {
 
     async handle(req, res) {
         const request = new Request(req);
-        const response = new Response(res);
-        let sent = false;
-        await Object.keys(this.graph).forEach(async (path) => {
-            request.define();
-            const params = await this.match(path, request._url)
-            if(params && sent == false) {
-                request.addParams(params);
-                sent = true;
-                return this.graph[path](request, response); 
+        const initialized = await request.init();
+        if(initialized) {
+            const response = new Response(res);
+            let sent = false;
+            await Object.keys(this.graph).forEach(async (path) => {
+                const params = await this.match(path, request._url)
+                if(params && sent == false) {
+                    request.addParams(params);
+                    sent = true;
+                    return this.graph[path](request, response); 
+                }
+            });
+            if(!sent) {
+                return this.defaultMiddleWare(request, response);
             }
-        });
-        if(!sent) {
-            return this.defaultMiddleWare(request, response);
         }
     }
 
@@ -37,7 +40,6 @@ class Server {
     }
 
     appendRouter(router) {
-        console.log(router.graph);
         Object.keys(router.graph).forEach(route => {
             this.append(route, router.graph[route]);
         });

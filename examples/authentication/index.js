@@ -6,7 +6,7 @@ app.appendRouter(router);
 app.defaultAppend((req, res) => {
     return res.send({
         message: "not found."
-    }, 404)
+    }, 404);
 })
 
 app.listen(8000);

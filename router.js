@@ -2,7 +2,6 @@ const Server = require("./index");
 
 class Router extends Server {
     constructor(basePath) {
-        console.log(typeof Router);
         super(true);
         this.basePath = basePath
     }

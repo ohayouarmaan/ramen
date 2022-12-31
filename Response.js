@@ -8,9 +8,16 @@ class Response {
     }
 
     cookies(_cookies) {
+        console.log(_cookies);
         const cookieWithValues = []
         Object.keys(_cookies).forEach(cookie => {
-            const path = _cookies[cookie]['path'] || '/';
+            let path;
+            if(Object.keys(_cookies[cookie]).includes("path")) {
+                path = _cookies[cookie]['path'];
+            } else {
+                path = "/"
+            };
+
             let options = ""
             Object.keys(_cookies[cookie]).forEach(opt => {
                 if(opt != "val") {

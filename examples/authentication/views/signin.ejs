@@ -1,12 +1,11 @@
-<%- include('header.ejs') -%>
+<%- include("header.ejs") -%>
 
 <div>
-    <form method="post" action="/auth/">
-        <input type="text" placeholder="name" name="name"/>
+    <form method="post" action="/auth/signin">
         <input type="text" placeholder="email" name="email"/>
         <input type="password" placeholder="password" name="password"/>
         <input type="submit" placeholder="submit" value="submit" />
     </form>
 </div>
 
-<%- include('footer.ejs') -%>
+<%- include("footer.ejs") -%>
