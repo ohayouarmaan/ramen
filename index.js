@@ -3,16 +3,18 @@ const Request = require("./Request");
 const Response = require("./Response");
 
 class Server {
-    constructor(isRouter) {
+    constructor(isRouter, locals = {}) {
         if(!isRouter) {
             this.server = http.createServer(async (req, res) => await this.handle(req, res));
         }
+        this.locals = locals;
         this.graph = {};
     }
 
     async handle(req, res) {
         const request = new Request(req);
         const initialized = await request.init();
+        request.locals = this.locals;
         if(initialized) {
             const response = new Response(res);
             let sent = false;
