@@ -1,5 +1,4 @@
 const url = require("url");
-const E = require("events");
 const querystring = require("querystring")
 
 class Request {

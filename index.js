@@ -1,5 +1,4 @@
 const http = require("http");
-const Events = require("events");
 const Request = require("./Request");
 const Response = require("./Response");
 
