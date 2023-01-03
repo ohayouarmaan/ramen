@@ -61,7 +61,7 @@ class Request {
         console.log(`
             Method: ${this.method};
             Url: ${this._url};
-        `)
+        `);
         console.log('________________________________________________________');
     }
 
