@@ -14,6 +14,7 @@ class Request {
     params: object | undefined;
     cookies: {[ k: string ]: string};
     raw_body: string;
+    locals?: { [k:string]: string };
 
 
     constructor(req: http.IncomingMessage) {
