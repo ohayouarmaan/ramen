@@ -1,15 +1,23 @@
-const { MIME_TYPES } = require("./Constants");
-const EJS = require("ejs");
+import * as EJS from "ejs";
+import http from "http";
+import { MIME_TYPES } from "./Constants";
 
 class Response {
-    constructor(res, status) {
-        this._res = res;
-        this.status = status || 200;
-    }
+    _res: http.ServerResponse;
+    status: number;
+    type?: string;
+    data?: string | object;
 
-    cookies(_cookies) {
+    constructor(res: http.ServerResponse, status: number = 200) {
+        this._res = res;
+        this.status = status
+
+    }
+    
+
+    cookies(_cookies: { [k:string]: { val: string; path: string; [k:string]: string } }) {
         console.log(_cookies);
-        const cookieWithValues = []
+        const cookieWithValues: Array<string> = []
         Object.keys(_cookies).forEach(cookie => {
             let path;
             if(Object.keys(_cookies[cookie]).includes("path")) {
@@ -30,7 +38,7 @@ class Response {
         this._res.setHeader('Set-Cookie', cookieWithValues);
     }
     
-    send(data, status) {
+    send(data: number | string | object, status: number) {
         if(status) {
             this.status = status;
         }
@@ -52,7 +60,7 @@ class Response {
         this._res.end();
     }
 
-    async render(path, options, status=200) {
+    async render(path: string, options: object = {}, status=200) {
         try {
             const html = await EJS.renderFile(path, options);
             this.send(html, status)
