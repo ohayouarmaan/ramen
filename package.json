@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/ohayouarmaan/ramen#readme",
   "devDependencies": {
+    "@types/node": "^18.11.18",
     "nodemon": "^2.0.20"
   },
   "dependencies": {
