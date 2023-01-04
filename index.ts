@@ -1,17 +1,23 @@
-const http = require("http");
-const Request = require("./Request");
-const Response = require("./Response");
+import http from "http";
+import Request from "./Request";
+import Response from "./Response";
 
 class Server {
-    constructor(isRouter, locals = {}) {
+    server?: http.Server;
+    locals: { [k:string]: string };
+    graph: {[path: string]: (req: Request, res: Response) => any};
+    defaultMiddleWare?: Function;
+
+    constructor(isRouter: boolean, locals = {}) {
         if(!isRouter) {
             this.server = http.createServer(async (req, res) => await this.handle(req, res));
         }
+
         this.locals = locals;
         this.graph = {};
     }
 
-    async handle(req, res) {
+    async handle(req: http.IncomingMessage, res: http.ServerResponse) {
         const request = new Request(req);
         const initialized = await request.init();
         request.locals = this.locals;
@@ -27,32 +33,38 @@ class Server {
                 }
             });
             if(!sent) {
-                return this.defaultMiddleWare(request, response);
+                if(this.defaultMiddleWare){
+                    return this.defaultMiddleWare(request, response);
+                } else {
+                    throw new Error("No default middleware provided");
+                }
             }
         }
     }
 
-    defaultAppend(cb) {
+    defaultAppend(cb: Function) {
         this.defaultMiddleWare = cb;
     }
 
-    append(path, cb) {
+    append(path: string, cb: (req: Request, res: Response) => any) {
         this.graph[path] = cb;
     }
 
-    appendRouter(router) {
+    appendRouter(router: Server) {
         Object.keys(router.graph).forEach(route => {
             this.append(route, router.graph[route]);
         });
     }
 
-    listen(port) {
-        this.server.listen(port);
+    listen(port: number) {
+        this.server?.listen(port);
     }
 
-    async match(path, desiredPath) {
-        const tokens = [];
-        const params = {};
+    async match(path: string, desiredPath: string) {
+        const tokens: Array<{
+            [q: string]: string;
+        } | string> = [];
+        const params: { [k:string]: string } = {};
         const routes = path.split("/");
         const desiredRoutes = desiredPath.split("/");
 
@@ -72,8 +84,10 @@ class Server {
 
         for(let i = 0; i < tokens.length; i++) {
             if(typeof tokens[i] == "object" && desiredRoutes[i]) {
-                const q = Object.keys(tokens[i])[0]
-                params[tokens[i][q]] = desiredRoutes[i];
+                const q: string = Object.keys(tokens[i])[0]
+                if(typeof tokens[i] == "object"){
+                    params[(tokens[i] as {[q: string]: string})[q]] = desiredRoutes[i];
+                }
             } else if(typeof tokens[i] == "string" && desiredRoutes[i]) {
                 if(tokens[i] !== desiredRoutes[i]){
                     return false
@@ -86,4 +100,4 @@ class Server {
     }
 }
 
-module.exports = Server;
+export default Server;

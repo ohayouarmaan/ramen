@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "run:dev": "nodemon index.js",
-    "run:test:auth": "nodemon examples/authentication/index.js"
+    "run:test:auth": "nodemon examples/authentication/index.js",
+    "compile": "tsc"
   },
   "repository": {
     "type": "git",
@@ -19,6 +20,9 @@
   },
   "homepage": "https://github.com/ohayouarmaan/ramen#readme",
   "devDependencies": {
+    "@types/ejs": "^3.1.1",
+    "@types/node": "^18.11.18",
+    "concurrently": "^7.6.0",
     "nodemon": "^2.0.20"
   },
   "dependencies": {
