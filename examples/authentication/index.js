@@ -1,4 +1,4 @@
-const Ramen = require("../../index");
+const Ramen = require("../../dist/index");
 const app = new Ramen();
 const router = require("./Routes/index");
 
