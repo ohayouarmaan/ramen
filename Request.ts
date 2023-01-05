@@ -3,18 +3,26 @@ import http from "http";
 import { Socket } from "net";
 
 class Request {
-    method: string;  
+    method: string;
     _req: http.IncomingMessage;
-    headers: { 'x-forwarded-for'?: string; 'content-type'?: string };
+    headers: { 'x-forwarded-for'?: string;
+               'content-type'?: string;
+               method?: string;
+               cookie?: string;
+               origin?: string;
+               scheme?: string
+               "Access-Control-Allow-Origin"?: string;
+            };
+
     _url: string;
     socket: Socket;
     queryParams: object;
     ip: string;
     body: object | undefined;
     params: object | undefined;
-    cookies: {[ k: string ]: string};
+    cookies: { [k: string]: string };
     raw_body: string;
-    locals?: { [k:string]: string };
+    locals?: { [k: string]: string };
 
 
     constructor(req: http.IncomingMessage) {
@@ -24,10 +32,10 @@ class Request {
         this.headers = req.headers;
         this._url = req.url || "";
         this.socket = req.socket || {};
-        this.ip = 
-            this.headers['x-forwarded-for'] || 
+        this.ip =
+            this.headers['x-forwarded-for'] ||
             this.socket.remoteAddress || '';
-        
+
         // Parse Query Parameters
         this.queryParams = this._url.includes("?") ? this.parse(this._url) : {};
 
@@ -40,7 +48,7 @@ class Request {
 
         // Parse Cookies
         this.cookies = {};
-        if(Object.keys(this._req.headers).includes("cookie")){
+        if (Object.keys(this._req.headers).includes("cookie")) {
             const _cookies = this._req.headers.cookie?.split("; ") || [];
             _cookies.forEach(cookie => {
                 const cookieName = cookie.split("=")[0];
@@ -52,14 +60,14 @@ class Request {
 
     async init() {
         return new Promise(fullfill => this._req.on("end", () => {
-            if(this.raw_body == "" || this.raw_body == "\n") {
+            if (this.raw_body == "" || this.raw_body == "\n") {
                 this.body = {}
             } else {
                 if (this.headers['content-type']) {
-                    if(this.headers['content-type'] == 'application/x-www-form-urlencoded') {
+                    if (this.headers['content-type'] == 'application/x-www-form-urlencoded') {
                         const data = queryString.decode(this.raw_body);
                         this.body = data;
-                    } else if(this.headers['content-type'] == 'application/json') {
+                    } else if (this.headers['content-type'] == 'application/json') {
                         this.body = JSON.parse(this.raw_body);
                     }
                 }
@@ -83,7 +91,7 @@ class Request {
         params = params.slice(1, params.length)
         params = params[0].split("&");
         // console.log(params);
-        const qps: {[x: string]: string} = {};
+        const qps: { [x: string]: string } = {};
         params.forEach(p => {
             const q = p.split("=")[0];
             const _p = p.split("=")[1];
