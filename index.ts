@@ -5,14 +5,13 @@ import Response from "./Response";
 class Server {
     server?: http.Server;
     locals: { [k:string]: string };
-    graph: {method?: string | undefined; [path: string]: ((req: Request, res: Response) => any) | string | undefined};
-    defaultMiddleWare?: Function;
+    graph: {[path: string]: {cb: (req: Request, res: Response) => any; method: string} };
+    defaultMiddleWare?: (req: Request, res: Response) => any;
 
     constructor(isRouter: boolean, locals = {}) {
         if(!isRouter) {
             this.server = http.createServer(async (req, res) => await this.handle(req, res));
         }
-
         this.locals = locals;
         this.graph = {};
     }
@@ -30,7 +29,15 @@ class Server {
                     request.addParams(params);
                     sent = true;
                     if(typeof this.graph[path] == "function") {
-                        return (this.graph[path] as (req: Request, res: Response) => any)(request, response); 
+                        if(request.method == this.graph[path]['method']) {
+                            return (this.graph[path]['cb'])(request, response); 
+                        } else {
+                            if(this.defaultMiddleWare) {
+                                this.defaultMiddleWare(request, response);
+                            } else {
+                                throw new Error('No default middleware given.')
+                            }
+                        }
                     }
                 }
             });
@@ -44,18 +51,19 @@ class Server {
         }
     }
 
-    defaultAppend(cb: Function) {
+    defaultAppend(cb: (req: Request, res: Response) => any) {
         this.defaultMiddleWare = cb;
     }
 
-    append(path: string, cb: (req: Request, res: Response) => any) {
-        this.graph[path] = cb;
+    append(path: string, cb: (req: Request, res: Response) => any, method: string = "GET") {
+        this.graph[path]['cb'] = cb;
+        this.graph[path]['method'] = method;
     }
 
     appendRouter(router: Server) {
         Object.keys(router.graph).forEach(route => {
             if(route != "method" && typeof route == "function") {
-                this.append(route, (router.graph[route] as (req: Request, res: Response) => any));
+                this.append(route, (router.graph[route]['cb']), router.graph[route]['method']);
             }
         });
     }
