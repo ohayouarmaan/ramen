@@ -4,7 +4,7 @@ import { Socket } from "net";
 
 class Request {
     method: string;
-    _req: http.IncomingMessage;
+    protected _req: http.IncomingMessage;
     headers: { 'x-forwarded-for'?: string;
                'content-type'?: string;
                method?: string;
