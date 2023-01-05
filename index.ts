@@ -60,9 +60,13 @@ class Server {
         });
     }
 
-    listen(port: number) {
-        this.server?.listen(port);
-    }
+    listen(port: number, cb: (port: number) => void = (port: number) => {
+        console.log(`SERVER RUNNING on port : ${port}`);
+    }) {
+        this.server?.listen(port, () => {
+            cb(port);
+        });
+    };
 
     async match(path: string, desiredPath: string) {
         const tokens: Array<{
