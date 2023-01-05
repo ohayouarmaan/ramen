@@ -5,7 +5,7 @@ import Response from "./Response";
 class Server {
     server?: http.Server;
     locals: { [k:string]: string };
-    graph: {[path: string]: (req: Request, res: Response) => any};
+    graph: {method?: string | undefined; [path: string]: ((req: Request, res: Response) => any) | string | undefined};
     defaultMiddleWare?: Function;
 
     constructor(isRouter: boolean, locals = {}) {
@@ -29,7 +29,9 @@ class Server {
                 if(params && sent == false) {
                     request.addParams(params);
                     sent = true;
-                    return this.graph[path](request, response); 
+                    if(typeof this.graph[path] == "function") {
+                        return (this.graph[path] as (req: Request, res: Response) => any)(request, response); 
+                    }
                 }
             });
             if(!sent) {
@@ -52,13 +54,19 @@ class Server {
 
     appendRouter(router: Server) {
         Object.keys(router.graph).forEach(route => {
-            this.append(route, router.graph[route]);
+            if(route != "method" && typeof route == "function") {
+                this.append(route, (router.graph[route] as (req: Request, res: Response) => any));
+            }
         });
     }
 
-    listen(port: number) {
-        this.server?.listen(port);
-    }
+    listen(port: number, cb: (port: number) => void = (port: number) => {
+        console.log(`SERVER RUNNING on port : ${port}`);
+    }) {
+        this.server?.listen(port, () => {
+            cb(port);
+        });
+    };
 
     async match(path: string, desiredPath: string) {
         const tokens: Array<{
