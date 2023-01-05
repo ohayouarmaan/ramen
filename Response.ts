@@ -3,7 +3,7 @@ import http from "http";
 import { MIME_TYPES } from "./Constants";
 
 class Response {
-    _res: http.ServerResponse;
+    protected _res: http.ServerResponse;
     status: number;
     type?: string;
     data?: string | object;
@@ -11,7 +11,6 @@ class Response {
     constructor(res: http.ServerResponse, status: number = 200) {
         this._res = res;
         this.status = status
-
     }
     
 
