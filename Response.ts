@@ -1,12 +1,13 @@
 import * as EJS from "ejs";
 import http from "http";
+import fs from "fs";
 import { MIME_TYPES } from "./Constants";
 
 class Response {
     protected _res: http.ServerResponse;
     status: number;
     type?: string;
-    data?: string | object;
+    data?: string | object | fs.ReadStream;
 
     constructor(res: http.ServerResponse, status: number = 200) {
         this._res = res;
@@ -57,6 +58,10 @@ class Response {
         this._res.writeHead(this.status, { "Content-Type": this.type });
         this._res.write(this.data);
         this._res.end();
+    }
+
+    async sendFile(path: string) {
+        const stream = await fs.createReadStream(path);
     }
 
     async render(path: string, options: object = {}, status=200) {

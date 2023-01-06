@@ -3,6 +3,7 @@ import Request from "./Request";
 import Response from "./Response";
 
 class Server {
+    // Initial properties
     server?: http.Server;
     locals: { [k:string]: string };
     graph: {[path: string]: {cb: (req: Request, res: Response) => any; method: string} };
@@ -16,6 +17,7 @@ class Server {
         this.graph = {};
     }
 
+    // handles the incoming request and response;
     async handle(req: http.IncomingMessage, res: http.ServerResponse) {
         const request = new Request(req);
         const initialized = await request.init();

@@ -3,6 +3,7 @@ import http from "http";
 import { Socket } from "net";
 
 class Request {
+    // Initial properties which a request will have
     method: string;
     protected _req: http.IncomingMessage;
     headers: { 'x-forwarded-for'?: string;
@@ -58,6 +59,7 @@ class Request {
         }
     };
 
+    // use this to add request body in a asynchronous fashion
     async init() {
         return new Promise(fullfill => this._req.on("end", () => {
             if (this.raw_body == "" || this.raw_body == "\n") {
@@ -85,6 +87,7 @@ class Request {
         console.log('________________________________________________________');
     }
 
+    // parses url in key value pairs
     parse(url: string) {
         let params = url.split("?");
         // console.log(params)
