@@ -27,12 +27,15 @@ class Server {
             let sent = false;
             await Object.keys(this.graph).forEach(async (path) => {
                 const params = await this.match(path, request._url)
-                if(params && sent == false) {
-                    request.addParams(params);
+                if(sent == false) {
+                    request.addParams(params || {});
                     sent = true;
+                    console.log("HELLO PLEASE");
                     if(request.method == this.graph[path]['method']) {
+                        console.log("WHAT THE FUCK")
                         return (this.graph[path]['cb'])(request, response); 
                     } else {
+                        console.log("WHY");
                         if(this.defaultMiddleWare) {
                             this.defaultMiddleWare(request, response);
                         } else {
