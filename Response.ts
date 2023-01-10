@@ -62,6 +62,7 @@ class Response {
 
     async sendFile(path: string) {
         const stream = await fs.createReadStream(path);
+        stream.pipe(this._res);
     }
 
     async render(path: string, options: object = {}, status=200) {

@@ -1,8 +1,10 @@
+// import statements
 import queryString from "querystring"
 import http from "http";
 import { Socket } from "net";
 
 class Request {
+
     // Initial properties which a request will have
     method: string;
     protected _req: http.IncomingMessage;

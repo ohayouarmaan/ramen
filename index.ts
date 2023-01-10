@@ -30,15 +30,13 @@ class Server {
                 if(params && sent == false) {
                     request.addParams(params);
                     sent = true;
-                    if(typeof this.graph[path] == "function") {
-                        if(request.method == this.graph[path]['method']) {
-                            return (this.graph[path]['cb'])(request, response); 
+                    if(request.method == this.graph[path]['method']) {
+                        return (this.graph[path]['cb'])(request, response); 
+                    } else {
+                        if(this.defaultMiddleWare) {
+                            this.defaultMiddleWare(request, response);
                         } else {
-                            if(this.defaultMiddleWare) {
-                                this.defaultMiddleWare(request, response);
-                            } else {
-                                throw new Error('No default middleware given.')
-                            }
+                            throw new Error('No default middleware given.')
                         }
                     }
                 }
@@ -58,8 +56,10 @@ class Server {
     }
 
     append(path: string, cb: (req: Request, res: Response) => any, method: string = "GET") {
-        this.graph[path]['cb'] = cb;
-        this.graph[path]['method'] = method;
+        this.graph[path] = {
+            cb: cb,
+            method: method,
+        };
     }
 
     appendRouter(router: Server) {
