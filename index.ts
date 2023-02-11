@@ -1,3 +1,4 @@
+// Import statements
 import http from "http";
 import Request from "./Request";
 import Response from "./Response";
@@ -30,12 +31,9 @@ class Server {
                 if(sent == false) {
                     request.addParams(params || {});
                     sent = true;
-                    console.log("HELLO PLEASE");
                     if(request.method == this.graph[path]['method']) {
-                        console.log("WHAT THE FUCK")
                         return (this.graph[path]['cb'])(request, response); 
                     } else {
-                        console.log("WHY");
                         if(this.defaultMiddleWare) {
                             this.defaultMiddleWare(request, response);
                         } else {
@@ -44,6 +42,7 @@ class Server {
                     }
                 }
             });
+
             if(!sent) {
                 if(this.defaultMiddleWare){
                     return this.defaultMiddleWare(request, response);

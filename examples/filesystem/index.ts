@@ -1,5 +1,6 @@
 import Ramen from "../../index";
 import path from "path";
+import fs from "fs";
 import Request from "../../Request";
 import Response from "../../Response";
 
@@ -9,6 +10,12 @@ app.append("/", (req: Request, res: Response) => {
     req.define();
     return res.sendFile(path.resolve(__dirname, "./test.txt"));
 }, "GET");
+
+app.append("/", async (req: Request, res: Response) => {
+    req.define();
+    await fs.writeFileSync("./something", req.raw_body)
+    return res.send(req.body || "done", 200);
+}, "POST")
 
 app.defaultAppend((req: Request, res: Response) => {
     req.define();

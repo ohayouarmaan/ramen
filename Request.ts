@@ -73,6 +73,13 @@ class Request {
                         this.body = data;
                     } else if (this.headers['content-type'] == 'application/json') {
                         this.body = JSON.parse(this.raw_body);
+                    } else if(this.headers['content-type'].startsWith("multipart/form-data;")) {
+                        console.log("Multipart form data found.")
+                        const boundary = this.headers['content-type']
+                            .split(";")[1]
+                            .trim()
+                            .split("=")[1]
+                        this.body = {};
                     }
                 }
             };
