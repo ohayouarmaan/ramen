@@ -17,6 +17,7 @@ app.append("/", async (req: Request, res: Response) => {
     return res.send(req.body || "done", 200);
 }, "POST")
 
+// default route which will get forwarded to if it normally doesn't matches any other routes
 app.defaultAppend((req: Request, res: Response) => {
     req.define();
     res.send("Not found", 404);
@@ -25,4 +26,6 @@ app.defaultAppend((req: Request, res: Response) => {
 const port = parseInt(process.env.PORT || '3000') ;
 app.listen((port as number), () => {
     console.log(`Server listening on port: ${port}`);
-})
+});
+
+console.log(`Server listening on port ${port}`);
