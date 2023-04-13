@@ -2,6 +2,8 @@
 import queryString from "querystring"
 import http from "http";
 import { Socket } from "net";
+import { parse as multipartParse, getBoundary} from "parse-multipart-data";
+import { buffer } from "stream/consumers";
 
 class Request {
 
@@ -46,13 +48,11 @@ class Request {
         // Request data stream
         // the data stream gives you the body object
         this.raw_body = "";
+
         this._req.on("data", e => {
             this.raw_body += e;
         });
 
-        this._req.on("end", () => {
-            this.data_completed = true;
-        });
 
         // Parse Cookies
         this.cookies = {};
@@ -80,14 +80,12 @@ class Request {
                         this.body = JSON.parse(this.raw_body);
                     } else if(this.headers['content-type'].startsWith("multipart/form-data;")) {
                         console.log("Multipart form data found.")
-                        console.log(this.headers['content-type']);
-                        const boundary = this.headers['content-type']
-                            .split(";")[1]
-                            .trim()
-                            .split("=");
+                        // console.log(this.headers['content-type']);
                         
-                        console.log(boundary);
-                        this.body = {};
+                        const boundary = (getBoundary(this.headers["content-type"]));
+                        this.body = {
+                            "form-data": (multipartParse(Buffer.from(this.raw_body, "utf-8"), boundary))
+                        };
                     }
                 }
             };
