@@ -17,6 +17,11 @@ app.append("/", async (req: Request, res: Response) => {
     return res.send(req.body || "done", 200);
 }, "POST")
 
+app.append("/post", (req: Request, res: Response) => {
+    req.define();
+    return res.send("Hello, world", 200);
+}, "POST")
+
 app.defaultAppend((req: Request, res: Response) => {
     req.define();
     res.send("Not found", 404);

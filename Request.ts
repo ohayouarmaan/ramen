@@ -26,7 +26,7 @@ class Request {
     cookies: { [k: string]: string };
     raw_body: string;
     locals?: { [k: string]: string };
-
+    data_completed: boolean;
 
     constructor(req: http.IncomingMessage) {
         // Set properties
@@ -39,6 +39,7 @@ class Request {
             this.headers['x-forwarded-for'] ||
             this.socket.remoteAddress || '';
 
+        this.data_completed = false;
         // Parse Query Parameters
         this.queryParams = this._url.includes("?") ? this.parse(this._url) : {};
 
@@ -47,6 +48,10 @@ class Request {
         this.raw_body = "";
         this._req.on("data", e => {
             this.raw_body += e;
+        });
+
+        this._req.on("end", () => {
+            this.data_completed = true;
         });
 
         // Parse Cookies
@@ -75,10 +80,13 @@ class Request {
                         this.body = JSON.parse(this.raw_body);
                     } else if(this.headers['content-type'].startsWith("multipart/form-data;")) {
                         console.log("Multipart form data found.")
+                        console.log(this.headers['content-type']);
                         const boundary = this.headers['content-type']
                             .split(";")[1]
                             .trim()
-                            .split("=")[1]
+                            .split("=");
+                        
+                        console.log(boundary);
                         this.body = {};
                     }
                 }
