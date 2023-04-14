@@ -2,8 +2,7 @@
 import queryString from "querystring"
 import http from "http";
 import { Socket } from "net";
-import { parse as multipartParse, getBoundary} from "parse-multipart-data";
-import { buffer } from "stream/consumers";
+import { parse as multipartParse, getBoundary } from "parse-multipart-data";
 
 class Request {
 
@@ -79,8 +78,6 @@ class Request {
                     } else if (this.headers['content-type'] == 'application/json') {
                         this.body = JSON.parse(this.raw_body);
                     } else if(this.headers['content-type'].startsWith("multipart/form-data;")) {
-                        console.log("Multipart form data found.")
-                        // console.log(this.headers['content-type']);
                         
                         const boundary = (getBoundary(this.headers["content-type"]));
                         this.body = {
@@ -105,10 +102,8 @@ class Request {
     // parses url in key value pairs
     parse(url: string) {
         let params = url.split("?");
-        // console.log(params)
         params = params.slice(1, params.length)
         params = params[0].split("&");
-        // console.log(params);
         const qps: { [x: string]: string } = {};
         params.forEach(p => {
             const q = p.split("=")[0];
