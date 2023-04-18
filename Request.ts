@@ -47,7 +47,6 @@ class Request {
         // Request data stream
         // the data stream gives you the body object
         this.raw_body = "";
-
         this._req.on("data", e => {
             this.raw_body += e;
         });
