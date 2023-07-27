@@ -62,7 +62,6 @@ class Response {
 
     async sendFile(path: string) {
         const stream = await fs.createReadStream(path);
-        console.log("Helloooooo");
         const fileName = path.split("/")[path.split("/").length - 1];
         this._res.writeHead(200, {
             "Content-Type": "application/octet-stream",
