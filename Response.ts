@@ -11,8 +11,8 @@ class Response {
 
     constructor(res: http.ServerResponse, status: number = 200) {
         this._res = res;
-        this.status = status
-    }
+        this.status = status;
+    };
     
 
     cookies(_cookies: { [k:string]: { val: string; path: string; [k:string]: string } }) {
@@ -80,7 +80,6 @@ class Response {
             this.send(html, 400);
         };
     };
-
 }
 
 export default Response;

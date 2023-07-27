@@ -2,6 +2,7 @@
 import queryString from "querystring"
 import http from "http";
 import { Socket } from "net";
+import { parse as multipartParse, getBoundary } from "parse-multipart-data";
 
 class Request {
 
@@ -26,7 +27,7 @@ class Request {
     cookies: { [k: string]: string };
     raw_body: string;
     locals?: { [k: string]: string };
-
+    data_completed: boolean;
 
     constructor(req: http.IncomingMessage) {
         console.log("HELLO, ", req.method);
@@ -40,6 +41,7 @@ class Request {
             this.headers['x-forwarded-for'] ||
             this.socket.remoteAddress || '';
 
+        this.data_completed = false;
         // Parse Query Parameters
         this.queryParams = this._url.includes("?") ? this.parse(this._url) : {};
 
@@ -49,6 +51,7 @@ class Request {
         this._req.on("data", e => {
             this.raw_body += e;
         });
+
 
         // Parse Cookies
         this.cookies = {};
@@ -75,12 +78,11 @@ class Request {
                     } else if (this.headers['content-type'] == 'application/json') {
                         this.body = JSON.parse(this.raw_body);
                     } else if(this.headers['content-type'].startsWith("multipart/form-data;")) {
-                        console.log("Multipart form data found.")
-                        const boundary = this.headers['content-type']
-                            .split(";")[1]
-                            .trim()
-                            .split("=")[1]
-                        this.body = {};
+                        
+                        const boundary = (getBoundary(this.headers["content-type"]));
+                        this.body = {
+                            "form-data": (multipartParse(Buffer.from(this.raw_body, "utf-8"), boundary))
+                        };
                     }
                 }
             };
@@ -100,10 +102,8 @@ class Request {
     // parses url in key value pairs
     parse(url: string) {
         let params = url.split("?");
-        // console.log(params)
         params = params.slice(1, params.length)
         params = params[0].split("&");
-        // console.log(params);
         const qps: { [x: string]: string } = {};
         params.forEach(p => {
             const q = p.split("=")[0];
