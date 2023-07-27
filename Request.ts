@@ -30,6 +30,7 @@ class Request {
     data_completed: boolean;
 
     constructor(req: http.IncomingMessage) {
+        console.log("HELLO, ", req.method);
         // Set properties
         this.method = req.method || "";
         this._req = req;
