@@ -32,6 +32,9 @@ class Server {
                     request.addParams(params || {});
                     sent = true;
                     if(request.method == this.graph[path]['method']) {
+                        // Add middleware functionality 
+                        // Loop over the callbacks and call them one by one if the return value != undefined then return the main function
+                        // else keep looping.
                         return (this.graph[path]['cb'])(request, response); 
                     } else {
                         if(this.defaultMiddleWare) {
