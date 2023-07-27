@@ -8,13 +8,15 @@ class Request {
     // Initial properties which a request will have
     method: string;
     protected _req: http.IncomingMessage;
-    headers: { 'x-forwarded-for'?: string;
+    headers: {
+               'x-forwarded-for'?: string;
                'content-type'?: string;
                method?: string;
                cookie?: string;
                origin?: string;
                scheme?: string
                "Access-Control-Allow-Origin"?: string;
+               [key: string]: string | string[] | undefined;
             };
 
     _url: string;

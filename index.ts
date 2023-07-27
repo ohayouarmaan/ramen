@@ -35,9 +35,9 @@ class Server {
                         // Add middleware functionality 
                         // Loop over the callbacks and call them one by one if the return value != undefined then return the main function
                         // else keep looping.
-                        this.graph[path]['cb'].forEach(mid => {
+                        this.graph[path]['cb'].forEach(async mid => {
                             let shouldContinue = false;
-                            const value = mid(request, response, () => {
+                            const value = await mid(request, response, () => {
                                 shouldContinue = true;
                             });
                             if(!shouldContinue){
