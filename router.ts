@@ -9,8 +9,8 @@ class Router extends Server {
         this.basePath = basePath
     }
 
-    append(route: string, cb: (req: Request, res: Response) => any) {
-        super.append(this.basePath + route, cb);
+    append(path: string, method?: string, ...cb: Array<(req: Request, res: Response, next: Function) => any>) {
+        super.append(this.basePath + path, method, ...cb);
     }
 
 }

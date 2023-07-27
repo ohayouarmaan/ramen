@@ -7,7 +7,7 @@ class Server {
     // Initial properties
     server?: http.Server;
     locals: { [k:string]: string };
-    graph: {[path: string]: {cb: (req: Request, res: Response) => any; method: string} };
+    graph: {[path: string]: {cb: ((req: Request, res: Response, next: Function) => any)[]; method: string} };
     defaultMiddleWare?: (req: Request, res: Response) => any;
 
     constructor(isRouter: boolean = false, locals = {}) {
@@ -35,7 +35,15 @@ class Server {
                         // Add middleware functionality 
                         // Loop over the callbacks and call them one by one if the return value != undefined then return the main function
                         // else keep looping.
-                        return (this.graph[path]['cb'])(request, response); 
+                        this.graph[path]['cb'].forEach(mid => {
+                            let shouldContinue = false;
+                            const value = mid(request, response, () => {
+                                shouldContinue = true;
+                            });
+                            if(!shouldContinue){
+                                return value;
+                            };
+                        })
                     } else {
                         if(this.defaultMiddleWare) {
                             this.defaultMiddleWare(request, response);
@@ -60,7 +68,8 @@ class Server {
         this.defaultMiddleWare = cb;
     }
 
-    append(path: string, cb: (req: Request, res: Response) => any, method: string = "GET") {
+    append(path: string, method: string = "GET", ...cb: Array<((req: Request, res: Response, next: Function) => any)>) {
+        if(!method) method = "GET";
         this.graph[path] = {
             cb: cb,
             method: method,
@@ -70,7 +79,7 @@ class Server {
     appendRouter(router: Server) {
         Object.keys(router.graph).forEach(route => {
             if(route != "method" && typeof route == "function") {
-                this.append(route, (router.graph[route]['cb']), router.graph[route]['method']);
+                this.append(route, router.graph[route]['method'], ...(router.graph[route]['cb']));
             }
         });
     }

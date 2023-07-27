@@ -7,7 +7,7 @@ import Response from "../../Response";
 const app = new Ramen(false);
 
 // GET Request for the / route
-app.append("/", async (req: Request, res: Response) => {
+app.append("/", "GET", async (req: Request, res: Response) => {
     // req.define();
     console.log(path.resolve(__dirname, "./test.txt"));
     console.log(res);
@@ -19,10 +19,10 @@ app.append("/", async (req: Request, res: Response) => {
 });
 
 // post Request for the / route
-app.append("/", async (req: Request, res: Response) => {
+app.append("/", "POST", async (req: Request, res: Response) => {
     await fs.writeFileSync("./something", req.raw_body)
     return res.send(req.body || "done", 200);
-}, "POST")
+})
 
 // default route which will get forwarded to if it normally doesn't matches any other routes
 app.defaultAppend((req: Request, res: Response) => {
