@@ -8,6 +8,7 @@
     "run:dev": "nodemon index.js",
     "run:test:auth": "nodemon examples/authentication/index.js",
     "run:test:filesystem": "nodemon dist/examples/filesystem/index.js",
+    "run:test:middlewares": "nodemon dist/examples/middlewares/index.js",
     "compile": "tsc"
   },
   "repository": {

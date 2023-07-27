@@ -7,7 +7,7 @@ class Server {
     // Initial properties
     server?: http.Server;
     locals: { [k:string]: string };
-    graph: {[path: string]: {cb: ((req: Request, res: Response, next?: Function) => any)[]; method: string} };
+    graph: {[path: string]: {cb: ((req: Request, res: Response, next: Function) => any)[]; method: string} };
     defaultMiddleWare?: (req: Request, res: Response) => any;
 
     constructor(isRouter: boolean, locals = {}) {
@@ -39,10 +39,10 @@ class Server {
                             let shouldContinue = false;
                             const value = mid(request, response, () => {
                                 shouldContinue = true;
-                            })
+                            });
                             if(!shouldContinue){
                                 return value;
-                            }
+                            };
                         })
                     } else {
                         if(this.defaultMiddleWare) {
@@ -68,7 +68,7 @@ class Server {
         this.defaultMiddleWare = cb;
     }
 
-    append(path: string, method: string = "GET", ...cb: Array<((req: Request, res: Response) => any)>) {
+    append(path: string, method: string = "GET", ...cb: Array<((req: Request, res: Response, next: Function) => any)>) {
         if(!method) method = "GET";
         this.graph[path] = {
             cb: cb,
