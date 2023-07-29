@@ -6,9 +6,9 @@ import Response from "../../Response";
 
 const app = new Ramen(false);
 
-app.append("/", "GET", (req: Request,  res: Response, next: Function) => {
-    next()
-}, (req: Request, res: Response, next: Function) => {
+app.append("/", "GET", async (req: Request,  res: Response, next: Function) => {
+    return next()
+}, async (req: Request, res: Response) => {
     return res.send({
         "message": "Hello let's see?"
     }, 200)

@@ -6,4 +6,3 @@ and the send function takes two parameters
 
 * `data`: Data which you want to send
 * `status`: (optional) the status code which you want to send this data with
-
