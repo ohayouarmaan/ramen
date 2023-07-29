@@ -22,12 +22,14 @@
   },
   "homepage": "https://github.com/ohayouarmaan/ramen#readme",
   "devDependencies": {
+    "@types/colors": "^1.2.1",
     "@types/ejs": "^3.1.1",
     "@types/node": "^18.11.18",
     "concurrently": "^7.6.0",
     "nodemon": "^2.0.20"
   },
   "dependencies": {
+    "colors": "^1.4.0",
     "ejs": "^3.1.8",
     "parse-multipart-data": "^1.5.0"
   }

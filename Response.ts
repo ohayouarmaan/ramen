@@ -37,7 +37,7 @@ class Response {
         console.log('cookieWithValues', cookieWithValues);
         this._res.setHeader('Set-Cookie', cookieWithValues);
     }
-    
+
     send(data: number | string | object, status: number) {
         if(status) {
             this.status = status;

@@ -2,22 +2,35 @@
 import queryString from "querystring"
 import http from "http";
 import { Socket } from "net";
+import { green, gray, red } from "colors";
+
+interface IHeaders {
+    'x-forwarded-for'?: string;
+    'content-type'?: string;
+    method?: string;
+    cookie?: string;
+    origin?: string;
+    scheme?: string
+    "Access-Control-Allow-Origin"?: string;
+    [key: string]: string | string[] | undefined;
+}
+
+interface logInfo {
+        time: number;
+        route: string;
+        method: string;
+        headers: IHeaders;
+        body: object | undefined;
+        ip: string;
+        socketRemoteAddress: Socket;
+    }
 
 class Request {
 
     // Initial properties which a request will have
     method: string;
     protected _req: http.IncomingMessage;
-    headers: {
-               'x-forwarded-for'?: string;
-               'content-type'?: string;
-               method?: string;
-               cookie?: string;
-               origin?: string;
-               scheme?: string
-               "Access-Control-Allow-Origin"?: string;
-               [key: string]: string | string[] | undefined;
-            };
+    headers: IHeaders;
 
     _url: string;
     socket: Socket;
@@ -28,6 +41,7 @@ class Request {
     cookies: { [k: string]: string };
     raw_body: string;
     locals?: { [k: string]: string };
+    logFunction?: (data: logInfo) => void;
 
 
     constructor(req: http.IncomingMessage) {
@@ -63,6 +77,18 @@ class Request {
         }
     };
 
+    assignLogger(cb: (data: logInfo) => void){
+        this.logFunction = cb;
+    }
+
+    async logger(data: logInfo) {
+        if(this.logFunction){
+            await this.logFunction(data);
+        } else {
+            console.log(green(`${data.route} | ${data.method}`));
+        }
+    }
+
     // use this to add request body in a asynchronous fashion
     async init() {
         return new Promise(fullfill => this._req.on("end", () => {
@@ -76,7 +102,6 @@ class Request {
                     } else if (this.headers['content-type'] == 'application/json') {
                         this.body = JSON.parse(this.raw_body);
                     } else if(this.headers['content-type'].startsWith("multipart/form-data;")) {
-                        console.log("Multipart form data found.")
                         const boundary = this.headers['content-type']
                             .split(";")[1]
                             .trim()
@@ -84,6 +109,7 @@ class Request {
                         this.body = {};
                     }
                 }
+                this.logger({time: Date.now(), route: this._url, method: this.method, headers: this.headers, body: this.body, ip: this.ip, socketRemoteAddress: this.socket})
             };
             fullfill(1);
         }))
