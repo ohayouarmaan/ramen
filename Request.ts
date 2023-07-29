@@ -43,7 +43,6 @@ class Request {
     locals?: { [k: string]: string };
     logFunction?: (data: logInfo) => void;
 
-
     constructor(req: http.IncomingMessage) {
         // Set properties
         this.method = req.method || "";
@@ -55,6 +54,7 @@ class Request {
             this.headers['x-forwarded-for'] ||
             this.socket.remoteAddress || '';
 
+        this.data_completed = false;
         // Parse Query Parameters
         this.queryParams = this._url.includes("?") ? this.parse(this._url) : {};
 
@@ -64,6 +64,7 @@ class Request {
         this._req.on("data", e => {
             this.raw_body += e;
         });
+
 
         // Parse Cookies
         this.cookies = {};
@@ -127,10 +128,8 @@ class Request {
     // parses url in key value pairs
     parse(url: string) {
         let params = url.split("?");
-        // console.log(params)
         params = params.slice(1, params.length)
         params = params[0].split("&");
-        // console.log(params);
         const qps: { [x: string]: string } = {};
         params.forEach(p => {
             const q = p.split("=")[0];
