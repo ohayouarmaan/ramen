@@ -25,21 +25,24 @@ interface logInfo {
     socketRemoteAddress: Socket;
 }
 
-class Request {
+
+class Request<RouteParameters = {[key: string]: string}, Body = {[key: string]: any}, QueryParams = {[key: string]: string}> {
     // Initial properties which a request will have
+
     method: string;
     protected _req: http.IncomingMessage;
     headers: IHeaders;
 
     _url: string;
     socket: Socket;
-    queryParams: object;
+    queryParams: QueryParams | object;
     ip: string;
-    body: object | undefined;
-    params: object | undefined;
+    body: Body | undefined;
+    params: RouteParameters | undefined;
     cookies: { [k: string]: string };
     raw_body: string;
     locals?: { [k: string]: string };
+    data_completed: boolean;
     logFunction?: (data: logInfo) => void;
 
     constructor(req: http.IncomingMessage) {
@@ -93,23 +96,19 @@ class Request {
     async init() {
         return new Promise((fullfill) => this._req.on("end", async () => {
             if (this.raw_body == "" || this.raw_body == "\n") {
-                this.body = {}
+                this.body = ({} as Body)
             } else {
                 if (this.headers['content-type']) {
                     if (this.headers['content-type'] == 'application/x-www-form-urlencoded') {
                         const data = queryString.decode(this.raw_body);
-                        this.body = data;
+                        this.body = (data as Body);
                     } else if (this.headers['content-type'] == 'application/json') {
                         this.body = JSON.parse(this.raw_body);
                     } else if(this.headers['content-type'].startsWith("multipart/form-data;")) {
-                        const boundary = this.headers['content-type']
-                            .split(";")[1]
-                            .trim()
-                            .split("=")[1]
-                        this.body = {};
+                        this.body = (this.raw_body as Body);
                     }
                 }
-                await this.logger({time: Date.now(), route: this._url, method: this.method, headers: this.headers, body: this.body, ip: this.ip, socketRemoteAddress: this.socket})
+                await this.logger({time: Date.now(), route: this._url, method: this.method, headers: this.headers, body: (this.body as object), ip: this.ip, socketRemoteAddress: this.socket})
             };
             fullfill(1);
         }))
@@ -139,7 +138,7 @@ class Request {
     }
 
     // A function which will add route parameters.
-    addParams(params: { [key: string]: string }) {
+    addParams(params: RouteParameters) {
         this.params = params
     }
 }
