@@ -16,17 +16,16 @@ interface IHeaders {
 }
 
 interface logInfo {
-        time: number;
-        route: string;
-        method: string;
-        headers: IHeaders;
-        body: object | undefined;
-        ip: string;
-        socketRemoteAddress: Socket;
-    }
+    time: number;
+    route: string;
+    method: string;
+    headers: IHeaders;
+    body: object | undefined;
+    ip: string;
+    socketRemoteAddress: Socket;
+}
 
 class Request {
-
     // Initial properties which a request will have
     method: string;
     protected _req: http.IncomingMessage;
@@ -91,7 +90,7 @@ class Request {
 
     // use this to add request body in a asynchronous fashion
     async init() {
-        return new Promise(fullfill => this._req.on("end", () => {
+        return new Promise((fullfill) => this._req.on("end", async () => {
             if (this.raw_body == "" || this.raw_body == "\n") {
                 this.body = {}
             } else {
@@ -109,7 +108,7 @@ class Request {
                         this.body = {};
                     }
                 }
-                this.logger({time: Date.now(), route: this._url, method: this.method, headers: this.headers, body: this.body, ip: this.ip, socketRemoteAddress: this.socket})
+                await this.logger({time: Date.now(), route: this._url, method: this.method, headers: this.headers, body: this.body, ip: this.ip, socketRemoteAddress: this.socket})
             };
             fullfill(1);
         }))

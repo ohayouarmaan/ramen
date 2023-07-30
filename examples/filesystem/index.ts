@@ -1,8 +1,8 @@
-import Ramen from "../../index";
+import Ramen from "../../src/index";
 import path from "path";
 import fs from "fs";
-import Request from "../../Request";
-import Response from "../../Response";
+import Request from "../../src/Request";
+import Response from "../../src/Response";
 
 const app = new Ramen(false);
 

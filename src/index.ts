@@ -2,9 +2,9 @@
 import http from "http";
 import Request from "./Request";
 import Response from "./Response";
+import Router from "./router";
 
 class Server {
-    // Initial properties
     server?: http.Server;
     locals: { [k:string]: string };
     graph: {[path: string]: {cb: ((req: Request, res: Response, next: Function) => any)[]; method: string} };
@@ -25,16 +25,14 @@ class Server {
         request.locals = this.locals;
         if(initialized) {
             const response = new Response(res);
+            
             let sent = false;
             await Object.keys(this.graph).forEach(async (path) => {
                 const params = await this.match(path, request._url)
-                if(sent == false) {
-                    request.addParams(params || {});
+                request.addParams(params || {});
+                if(sent == false && params != false) {
                     sent = true;
                     if(request.method == this.graph[path]['method']) {
-                        // Add middleware functionality 
-                        // Loop over the callbacks and call them one by one if the return value != undefined then return the main function
-                        // else keep looping.
                         this.graph[path]['cb'].forEach(async mid => {
                             let shouldContinue = false;
                             const value = await mid(request, response, () => {
@@ -76,12 +74,25 @@ class Server {
         };
     }
 
-    appendRouter(router: Server) {
-        Object.keys(router.graph).forEach(route => {
-            if(route != "method" && typeof route == "function") {
-                this.append(route, router.graph[route]['method'], ...(router.graph[route]['cb']));
-            }
-        });
+    appendRouter(router: (Server | Function)) {
+        if(router instanceof Server){
+            Object.keys(router.graph).forEach(route => {
+                if(route != "method" && typeof route !== "function") {
+                    console.log(router)
+                    this.append(route, router.graph[route]['method'], ...(router.graph[route]['cb']));
+                }
+            });
+        } else {
+            const nr: Router = Reflect.getMetadata("router", router);
+            const properties = Object.getOwnPropertyNames(router.prototype).slice(1);
+            properties.forEach(prop => {
+                const method = Reflect.getMetadata("method", router.prototype, prop);
+                const path = Reflect.getMetadata("path", router.prototype, prop);
+                const cb = Reflect.getMetadata("callback", router.prototype, prop);
+                nr.append(path, method, cb)
+            });
+            this.appendRouter(nr);
+        }
     }
 
     listen(port: number, cb: (port: number) => void = (port: number) => {
