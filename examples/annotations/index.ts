@@ -12,7 +12,7 @@ class API {
         return res.send("Hello, world", 200);
     };
     @Get("/something")
-    APIIndex2(req: Request, res: Response) {
+    APIIndex2(req: Request<{}, {name: string}>, res: Response) {
         return res.send("Hello, world", 200);
     };
 };

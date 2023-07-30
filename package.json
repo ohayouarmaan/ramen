@@ -12,6 +12,9 @@
     "run:test:annotations": "nodemon dist/examples/annotations/index.js",
     "compile": "tsc"
   },
+  "files": [
+    "dist"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ohayouarmaan/ramen.git"
