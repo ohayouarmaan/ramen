@@ -10,7 +10,7 @@ class Server {
     graph: {[path: string]: {cb: ((req: Request, res: Response, next: Function) => any)[]; method: string} };
     defaultMiddleWare?: (req: Request, res: Response) => any;
 
-    constructor(isRouter: boolean, locals = {}) {
+    constructor(isRouter: boolean = false, locals = {}) {
         if(!isRouter) {
             this.server = http.createServer(async (req, res) => await this.handle(req, res));
         }
