@@ -11,7 +11,7 @@ the `Request` class in the `Request.js` file holds the request object which can 
 
 ### How to use Ramen
 
-Using the annotations syntax
+1. Using the annotations syntax
 ```typescript
 import Ramen, {Request, Response} from "ramen"
 import { Route, Get } from "ramen/router"; 
@@ -21,16 +21,36 @@ const ramen = new Ramen();
 @Route("/posts")
 class PostRouter {
     @Get("/:id")
-    fetchPostWithId(req: Request, res: Response) {
+    fetchPostWithId(req: Request<{id: string}>, res: Response) {
         const postId = req.params.id;
         const post: object = fetchPost(postId);
         return res.send(post);
     }
 }
 
-ramen.use("/api", PostRouter);
+ramen.appendRouter("/api", PostRouter);
 
-ramen.listen(port || process.env.PORT, (_port) => {
+ramen.listen(process.env.PORT || 3000, (_port) => {
+    console.log(`[SERVER]: Running on port ${_port}`);
+});
+```
+
+2. Using the Router API
+```typescript
+import Ramen, {Request, Response} from "ramen";
+import Router from "ramen/router";
+
+const ramen = new Ramen();
+const postRouter = Router("/posts");
+
+postRouter.append("/:id", "GET", (req: Request<{id: string}>, res: Response) => {
+    const postId = req.params.id;
+    const post: object = fetchPostById(postId);
+    return res.send(post);
+});
+
+ramen.appendRouter("/posts", postRouter);
+ramen.listen(process.env.PORT || 3000, (_port) => {
     console.log(`[SERVER]: Running on port ${_port}`);
 });
 ```
