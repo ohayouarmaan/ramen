@@ -26,7 +26,7 @@ interface logInfo {
 }
 
 
-class Request<RouteParameters = {[key: string]: string}, Body = {[key: string]: any}, QueryParams = {[key: string]: string}> {
+class Request<RouteParameters = {[key: string]: string}, Body = {[key: string]: string}, QueryParams = {[key: string]: string}> {
     // Initial properties which a request will have
 
     method: string;

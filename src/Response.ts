@@ -60,6 +60,11 @@ class Response {
         this._res.end();
     }
 
+    setStatus(value: number) {
+        this.status = value;
+        return this;
+    }
+
     async sendFile(path: string) {
         const stream = await fs.createReadStream(path);
         const fileName = path.split("/")[path.split("/").length - 1];

@@ -1,7 +1,7 @@
 # Ramen - A micro framework for creating REST API in Nodejs
 ![Ramen image i got from google lol](https://res.cloudinary.com/practicaldev/image/fetch/s--QGRMnu9Q--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_auto%2Cw_880/https://dev-to-uploads.s3.amazonaws.com/uploads/articles/nfg8h1baize3kntwatl5.png)
 
-Just another ✨Backend API Framework✨ for javascript
+Just another ✨Backend API Framework✨ for typescript
 ## The plan
 Currently it's just me trying to create a javascript framework for making APIs. This is definitely inspired from the Express framework
 
@@ -34,7 +34,6 @@ ramen.listen(process.env.PORT || 3000, (_port) => {
     console.log(`[SERVER]: Running on port ${_port}`);
 });
 ```
-
 2. Using the Router API
 ```typescript
 import Ramen, {Request, Response} from "ramen";
@@ -54,3 +53,57 @@ ramen.listen(process.env.PORT || 3000, (_port) => {
     console.log(`[SERVER]: Running on port ${_port}`);
 });
 ```
+
+3. or you can simply add methods in the ramen object directly!
+```typescript
+import Ramen, {Request, Response} from "ramen";
+const ramen = new Ramen();
+
+ramen.append("/posts/:id", "GET", (req: Request, res: Response) => {
+    const postId = req.params.id;
+    const post: object = fetchPostById(postId);
+    return res.send(post);
+});
+
+ramen.listen(process.env.PORT || 3000, (_port) => {
+    console.log(`[SERVER]: Running on port ${_port}`);
+});
+
+```
+
+* Request is a generic class with this definition
+    ```typescript
+    class Request<RouteParameters = {[key: string]: string}, Body = {[key: string]: string}, QueryParams = {[key: string]: string}>
+    ```
+    this helps you to get good type definition in your IDE for yout request properties. 
+
+* The Request class hold the following properties
+    ```typescript
+    method: string;
+    headers: IHeaders;
+    _url: string;
+    socket: Socket;
+    queryParams: QueryParams | object;
+    ip: string;
+    body: Body | undefined;
+    params: RouteParameters | undefined;
+    cookies: { [k: string]: string };
+    raw_body: string;
+    locals?: { [k: string]: string };
+    data_completed: boolean;
+    logFunction?: (data: logInfo) => void;
+    define: () => void;
+    ```
+
+* Response class has the following properties
+    ```typescript
+    cookies: (_cookies: { [k:string]: { val: string; path: string; [k:string]: string } }) => void;
+
+    send: (data: number | string | object, status: number) => void;
+
+    setStatus: (value: number) => void;
+
+    sendFile: async (path: string) => void;
+
+    render: (path: string, options: object = {}, status=200) => void;
+    ```
