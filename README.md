@@ -9,28 +9,28 @@ the `Server` class in `main.js` file can be initialized which will create an HTT
 
 the `Request` class in the `Request.js` file holds the request object which can be used to access all the properties for the http request.
 
-### Done:
-* [ x ] Initialize the project
-* [ x ] Create a request class
-* [ x ] Create a server class
-* [ x ] add a test file
-* [ x ] Create a response class
-* [ x ] Create a middleware system
-* [ x ] Add query parameters
-* [ x ] add respond features in the response class
-* [ x ] Add Routers
+### How to use Ramen
 
-### TODO:
-* [  ] plan future features
-    1. Work on ORMs : [Research](https://celestial-can-1ae.notion.site/Research-on-ORM-Implementation-77077a80df7640feb5dd149675eaae04)
-        -- Canceled reason: Security issues.
-    2. Change codebase to TypeScript
+Using the annotations syntax
+```typescript
+import Ramen, {Request, Response} from "ramen"
+import { Route, Get } from "ramen/router"; 
 
-### Socials:
-* Notion: [Notion Teamspace](https://celestial-can-1ae.notion.site/Ramen-An-open-source-Backend-Rest-API-Framework-15b227a413e54909b7d64e03d655c084)
-* Twitter: [@RamenJs](https://twitter.com/RamenJs)
+const ramen = new Ramen();
 
-#### Devlogs
-[1]: [I am creating a new ✨JavaScript✨ Framework](https://dev.to/ohayouarmaan/i-am-creating-a-new-javascript-framework-46af)
+@Route("/posts")
+class PostRouter {
+    @Get("/:id")
+    fetchPostWithId(req: Request, res: Response) {
+        const postId = req.params.id;
+        const post: object = fetchPost(postId);
+        return res.send(post);
+    }
+}
 
-[2]: [Update on ✨Ramen 🍜✨ A new JavaScript Framework!](https://dev.to/ohayouarmaan/update-on-ramen-a-new-javascript-framework-239g)
+ramen.use("/api", PostRouter);
+
+ramen.listen(port || process.env.PORT, (_port) => {
+    console.log(`[SERVER]: Running on port ${_port}`);
+});
+```
