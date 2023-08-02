@@ -107,3 +107,18 @@ ramen.listen(process.env.PORT || 3000, (_port) => {
 
     render: (path: string, options: object = {}, status=200) => void;
     ```
+
+* The Ramen class has the following properties
+    ```typescript
+    constructor: (isRouter: boolean = false, locals = {}) => new Ramen;
+
+    defaultAppend: (cb: (req: Request, res: Response) => any) => void;
+
+    append: (path: string, method: string = "GET", ...cb: Array<(req: Request, res: Response, next: Function) => any>) => void;
+
+    appendRouter: (router: Router) => void;
+
+    listen: (port: number, cb: (port: number) => void = (port: number) => {
+        console.log(`SERVER RUNNING on port : ${port}`);
+    }) => void;
+    ```
