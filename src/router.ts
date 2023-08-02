@@ -37,4 +37,8 @@ export function Get(path: string) {
     };
 };
 
+export function Use(path: string) {
+
+};
+
 export default Router;
