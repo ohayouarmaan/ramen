@@ -66,7 +66,7 @@ class Server {
         this.defaultMiddleWare = cb;
     }
 
-    append(path: string, method: string = "GET", ...cb: Array<((req: Request, res: Response, next: Function) => any)>) {
+    append(path: string, method: string = "GET", ...cb: Array<((req: Request<{}, {}, {}>, res: Response, next: Function) => any)>) {
         if(!method) method = "GET";
         this.graph[path] = {
             cb: cb,
