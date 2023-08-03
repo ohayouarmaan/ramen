@@ -1,4 +1,4 @@
-import Ramen from "../../src"; 
+import Ramen from "../../src/server"; 
 
 const app = new Ramen(false, { something: "something2" });
 

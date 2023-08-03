@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import Server from "./index";
+import Server from "./server";
 import Request from "./Request";
 import Response from "./Response";
 

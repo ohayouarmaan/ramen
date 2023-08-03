@@ -13,7 +13,8 @@
     "compile": "tsc"
   },
   "files": [
-    "src/*"
+    "src/*",
+    "dist/"
   ],
   "repository": {
     "type": "git",

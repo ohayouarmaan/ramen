@@ -1,4 +1,4 @@
-import Ramen from "../../src/index";
+import Ramen from "../../src/server";
 import { Route, Get } from "../../src/router"
 import Request from "../../src/Request";
 import Router from "../../src/router";

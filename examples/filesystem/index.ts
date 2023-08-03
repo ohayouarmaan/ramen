@@ -1,4 +1,4 @@
-import Ramen from "../../src/index";
+import Ramen from "../../src/server";
 import path from "path";
 import fs from "fs";
 import Request from "../../src/Request";
