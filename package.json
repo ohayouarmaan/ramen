@@ -1,5 +1,5 @@
 {
-  "name": "ramen-ts",
+  "name": "raments",
   "version": "1.0.0",
   "description": "Just another ✨Backend API Framework✨ for javascript\r ## The plan\r Currently it's just me trying to create a javascript framework for making APIs. This is definitely inspired if not copied from the Express framework",
   "main": "index.js",
@@ -13,7 +13,7 @@
     "compile": "tsc"
   },
   "files": [
-    "dist"
+    "src"
   ],
   "repository": {
     "type": "git",
