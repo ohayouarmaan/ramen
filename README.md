@@ -18,8 +18,8 @@ npm install raments
 
 1. Using the annotations syntax
 ```typescript
-import Ramen, {Request, Response} from "ramen"
-import { Route, Get } from "ramen/router"; 
+import Ramen, {Request, Response} from "raments"
+import { Route, Get } from "raments/dist/src/router"; 
 
 const ramen = new Ramen();
 
@@ -41,8 +41,8 @@ ramen.listen(process.env.PORT || 3000, (_port) => {
 ```
 2. Using the Router API
 ```typescript
-import Ramen, {Request, Response} from "ramen";
-import Router from "ramen/router";
+import Ramen, {Request, Response} from "raments";
+import Router from "raments/dist/src/router";
 
 const ramen = new Ramen();
 const postRouter = Router("/posts");
@@ -61,7 +61,10 @@ ramen.listen(process.env.PORT || 3000, (_port) => {
 
 3. or you can simply add methods in the ramen object directly!
 ```typescript
-import Ramen, {Request, Response} from "ramen";
+import Ramen from "raments";
+import Request from "raments/dist/src/Request";
+import Response from "raments/dist/src/Response";
+
 const ramen = new Ramen();
 
 ramen.append("/posts/:id", "GET", (req: Request, res: Response) => {
