@@ -2,7 +2,7 @@
   "name": "raments",
   "version": "0.0.3",
   "description": "Just another ✨Backend API Framework✨ for javascript\r ## The plan\r Currently it's just me trying to create a javascript framework for making APIs. This is definitely inspired if not copied from the Express framework",
-  "main": "dist/index.js",
+  "main": "dist/src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "run:dev": "nodemon index.js",
