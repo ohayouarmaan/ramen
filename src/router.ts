@@ -73,4 +73,23 @@ export function Delete(path: string) {
     };
 };
 
+export function Use(path: string, router: object) {
+    return function (target: object) {
+
+        var currentRouter = Reflect.getMetadata("routers", target);
+        if(currentRouter){
+            currentRouter.push({path, router});
+        } else {
+            currentRouter = [
+                {
+                    path,
+                    router
+                }
+            ];
+        }
+
+        Reflect.defineMetadata("routers", currentRouter, target);
+    }
+}
+
 export default Router;

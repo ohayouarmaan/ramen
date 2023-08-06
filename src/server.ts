@@ -78,7 +78,6 @@ class Server {
         if(router instanceof Server){
             Object.keys(router.graph).forEach(route => {
                 if(route != "method" && typeof route !== "function") {
-                    console.log(router)
                     this.append(route, router.graph[route]['method'], ...(router.graph[route]['cb']));
                 }
             });
