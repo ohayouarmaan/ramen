@@ -37,8 +37,40 @@ export function Get(path: string) {
     };
 };
 
-export function Use(path: string) {
+export function Post(path: string) {
+    return function (target: object, propertyKey: string, descriptor: PropertyDescriptor) {
+        Reflect.defineMetadata("method", "POST", target, propertyKey);
+        Reflect.defineMetadata("path", path, target, propertyKey);
+        Reflect.defineMetadata("callback", descriptor.value, target, propertyKey);
+        const og = descriptor.value;
+        descriptor.value = (...args: []) => {
+            return og(...args);
+        }
+    };
+};
 
+export function Put(path: string) {
+    return function (target: object, propertyKey: string, descriptor: PropertyDescriptor) {
+        Reflect.defineMetadata("method", "PUT", target, propertyKey);
+        Reflect.defineMetadata("path", path, target, propertyKey);
+        Reflect.defineMetadata("callback", descriptor.value, target, propertyKey);
+        const og = descriptor.value;
+        descriptor.value = (...args: []) => {
+            return og(...args);
+        }
+    };
+};
+
+export function Delete(path: string) {
+    return function (target: object, propertyKey: string, descriptor: PropertyDescriptor) {
+        Reflect.defineMetadata("method", "DELETE", target, propertyKey);
+        Reflect.defineMetadata("path", path, target, propertyKey);
+        Reflect.defineMetadata("callback", descriptor.value, target, propertyKey);
+        const og = descriptor.value;
+        descriptor.value = (...args: []) => {
+            return og(...args);
+        }
+    };
 };
 
 export default Router;
