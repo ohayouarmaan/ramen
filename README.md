@@ -130,3 +130,10 @@ ramen.listen(process.env.PORT || 3000, (_port) => {
         console.log(`SERVER RUNNING on port : ${port}`);
     }) => void;
     ```
+
+# Current Plans
+
+* Create a cli for code generation
+* Implement automatic documentation
+* Add `@Use` decorator
+* Write documentation and create better examples
