@@ -74,21 +74,38 @@ class Server {
         };
     }
 
-    appendRouter(router: (Server | Function)) {
+    appendRouter(router: (Server | Function), routerBasePath: string | undefined = undefined) {
         if(router instanceof Server){
             Object.keys(router.graph).forEach(route => {
                 if(route != "method" && typeof route !== "function") {
-                    this.append(route, router.graph[route]['method'], ...(router.graph[route]['cb']));
+		    if(routerBasePath){
+                    	this.append(routerBasePath + route, router.graph[route]['method'], ...(router.graph[route]['cb']));
+		    } else {
+                    	this.append(route, router.graph[route]['method'], ...(router.graph[route]['cb']));
+		    }
                 }
             });
         } else {
             const nr: Router = Reflect.getMetadata("router", router);
+	    const extendedRouters = Reflect.getMetadata("routers", router);
+	    console.log(extendedRouters);
+	    if(extendedRouters){
+		    for(const r of extendedRouters){
+			    const routerPath = r.path;
+			    const router = r.router;
+			    nr.appendRouter(router, routerPath);
+		    }
+	    }
             const properties = Object.getOwnPropertyNames(router.prototype).slice(1);
             properties.forEach(prop => {
                 const method = Reflect.getMetadata("method", router.prototype, prop);
                 const path = Reflect.getMetadata("path", router.prototype, prop);
                 const cb = Reflect.getMetadata("callback", router.prototype, prop);
-                nr.append(path, method, cb)
+		if(routerBasePath){
+                	nr.append(routerBasePath + path, method, cb)
+		} else {
+                	nr.append(path, method, cb)
+		}
             });
             this.appendRouter(nr);
         }

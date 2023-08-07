@@ -58,6 +58,8 @@ server.defaultAppend((req, res) => {
     return res.send("No", 400);
 });
 
+console.log(server.graph);
+
 server.listen(3000, () => {
     console.log("hi")
 })
