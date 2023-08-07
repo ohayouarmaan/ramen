@@ -94,6 +94,7 @@ class Server {
         }
     }
 
+
     listen(port: number, cb: (port: number) => void = (port: number) => {
         console.log(`SERVER RUNNING on port : ${port}`);
     }) {
