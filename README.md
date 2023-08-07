@@ -135,5 +135,5 @@ ramen.listen(process.env.PORT || 3000, (_port) => {
 
 * Create a cli for code generation
 * Implement automatic documentation
-* Add `@Use` decorator
+* Add `@Use` decorator (x)
 * Write documentation and create better examples
